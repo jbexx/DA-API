@@ -26,14 +26,15 @@ namespace DatingApp.API.Controllers
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody]UserForRegisterDto userForRegisterDto)
     {
-      if (!ModelState.IsValid)
-        return BadRequest(ModelState);
 
-      userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
+      if (!string.IsNullOrEmpty(userForRegisterDto.Username))
+        userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
 
       if (await _repo.UserExist(userForRegisterDto.Username))
         return BadRequest("Username is already taken.");
 
+      if (!ModelState.IsValid)
+        return BadRequest(ModelState);
       var userToCreate = new User
       {
         Username = userForRegisterDto.Username
@@ -46,6 +47,8 @@ namespace DatingApp.API.Controllers
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody]UserForLoginDto userForLoginDto)
     {
+
+      throw new Exception("Computer says no!");
 
       var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
 
@@ -70,6 +73,7 @@ namespace DatingApp.API.Controllers
       var tokenString = tokenHandler.WriteToken(token);
 
       return Ok(new { tokenString });
+
     }
   }
 }

@@ -70,5 +70,10 @@ namespace DatingApp.API.Data
 
       return false;
     }
+
+    public Task<bool> UserExists(string username)
+    {
+      throw new NotImplementedException();
+    }
   }
 }
